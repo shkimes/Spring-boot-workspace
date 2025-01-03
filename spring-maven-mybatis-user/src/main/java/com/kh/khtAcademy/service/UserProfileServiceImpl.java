@@ -66,10 +66,10 @@ public class UserProfileServiceImpl implements UserProfileService {
         String projectDir = System.getProperty("user.dir") +"/src/main/resources/static/images/profile_img/";
         System.out.println("projectDir : " + projectDir);
         /*
-        * projectDir 을 이용해서 static/images/ 내에 profile_img 폴더를 만들고
-        * resource 안에 /static/images/ 내에 이미지 저장
-        *
-        * */
+         * projectDir 을 이용해서 static/images/ 내에 profile_img 폴더를 만들고
+         * resource 안에 /static/images/ 내에 이미지 저장
+         *
+         * */
         String baseDir = System.getProperty("user.home") + "/Desktop/user_images/"; //바탕화면 에서 user_images 폴더에 사진이 저장됨
 
         // 2. 디렉토리(폴더) 가 존재하지 않으면 생성
@@ -102,7 +102,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             user.setHobbies(hobbies);
             //System.getProperty("user.dir") +"/src/main/resources/static/images/profile_img/";
             user.setProfileImagePath("/images/profile_img/" + fileName); // -> static 아래에있는 이미지 경로이기 때문에 static 이전폴더는 모두 생략
-           // user.setProfileImagePath(imageFile.getAbsolutePath()); //프로필 이미지를 저장하고 저장한 경로 가져오기
+            // user.setProfileImagePath(imageFile.getAbsolutePath()); //프로필 이미지를 저장하고 저장한 경로 가져오기
 
             userProfileMapper.insertUser(user);
 
@@ -138,6 +138,22 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public List<User> searchHobby(String hobbies) {
         return userProfileMapper.searchHobby(hobbies);
+    }
+
+    /**
+     *
+     * @param username = 회원가입할 때 일치하는 username이 있는지 확인하고
+     *    userProfileMapper.checkDuplicatedUsername(username) > 0
+     *     checkDuplicatedUsername에서 넘어온 숫자가 1이상이면
+     *                 DB에 1명이상 존재하는 것이기 때문에 중복이므로
+     *                 중복이 맞습니다.
+     * @return          true 전달
+     */
+    @Override
+    public boolean checkDuplicatedUsername(String username) {
+        boolean duplicated = userProfileMapper.checkDuplicatedUsername(username) > 0;
+        System.out.println("중복 확인 : " + duplicated);
+        return duplicated;
     }
 
 
